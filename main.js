@@ -1,3 +1,5 @@
+// Globals
+
 var wordList = [{
     word: "DIS",
     hint1: "The infernal city"
@@ -20,3 +22,8 @@ var wordList = [{
     word: "MALEBRANCHE",
     hint1: "Winged demons who torment politicians in the fifth Maleboge of the Eighth circle"
 }]
+
+const displayField = document.querySelector("#inputField")
+const guessField = document.querySelector(".guessField")
+const attemptField = document.querySelector("#livesField")
+const soundWin = new Audio("./")
