@@ -1,0 +1,38 @@
+body {
+    background-color: #B50202;
+    font-family: 'Bowlby+One', cursive;
+}
+
+header {
+    text-align: center;
+    font-family: 'Bevan', serif;
+    font-size: 3em;
+}
+
+h2,
+.livesField {
+    text-align: center;
+    font-size:
+}
+
+#splash {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.container {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.background {
+    background-position: fixed;
+    background-image: url(/images/judgement3.jpeg);
+    background-size: 100% 100%;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+.button{
+    margin-left: 50%; 
+}

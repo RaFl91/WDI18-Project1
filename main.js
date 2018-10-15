@@ -7,6 +7,49 @@ class Game {
         this.guesses = word.word.replace(/[A-Z]/gi, "-").split("");
         this.failed = []
         this.hint = word.hint1
+        this.renderWord = function () {
+            displayField.value = this.guesses.join("").toUpperCase()
+            attemptField.textContent = `Pleas Left: ${this.lives}`
+        }
+        this.checkCharacter = function (character) {
+            if (this.lives && lives !== this.word.length) {
+                const charWordFound = this.word.find(element => element === character)
+                const charGuessFound = this.guesses.find(element => element === character)
+        
+                const guessedAlready = this.failed.includes(character)
+                this.word.forEach((element, index) => {
+                    if (character === element && !charGuessFound) {
+                        this.guesses[index] = character
+                        lives++
+                    }
+                })
+                if (!charWordFound && !guessedAlready) {
+                    this.lives--
+                    if (!guessedAlready) {
+                        failArr.push(character)
+                    }
+                }
+                this.renderWord()
+                return true
+            }
+            return false
+        }
+        this.resetGame = function () {
+            if (lives === game.word.length || game.lives === 0) {
+                if (lives === game.word.length) {
+                    soundWin.play()
+                } else if (game.lives === 0) {
+                    soundFail.play()
+                }
+                displayField.value = game.word.join("").toUpperCase()
+            }
+            setTimeout(() => {
+                guessField.innerHTML = ""
+                game = new Game(words[randomize()], 5)
+                lives = 0
+                game.renderWord()
+            }, 1500)
+        }
     }
 }
 
@@ -37,7 +80,7 @@ const words = wordList
 const hint1 = document.getElementById('hint1')
 const displayField = document.querySelector("#inputField")
 const guessField = document.querySelector(".guessField")
-const attemptField = document.querySelector("#livesField")
+const attemptField = document.querySelector(".livesField")
 const soundWin = new Audio("/audio/audioSuccess.mp3")
 const soundFail = new Audio("/audio/audioFail.mp3")
 let lives = 0
@@ -48,16 +91,13 @@ const randomize = (min = 0, max = words.length - 1) => Math.floor(Math.random() 
 
 //  === GAME START W/ NEW WORD ===
 let game = new Game(words[randomize()], 5)
-Game.renderWord();
+game.renderWord();
 
 const failArr = game.failed
 
 
 //  === DISPLAY WORD ON SCREEN ===
-function renderWord() {
-    displayField.value = this.guesses.join("").toUpperCase()
-    attemptField.textContent = `Pleas Left: ${this.lives}`
-}
+
 
 //  === MISSED GUESS DISPLAY ===
 guessField.innerHTML = " "
@@ -70,51 +110,14 @@ failArr.forEach((element, index) => {
 })
 
 //  === CHARACTER CHECKER ===
-function checkCharacter(character) {
-    if (this.lives && lives !== this.word.length) {
-        const charWordFound = this.word.find(element => element === character)
-        const charGuessFound = this.guesses.find(element => element === character)
 
-        const guessedAlready = this.failed.includes(character)
-        this.word.forEach((element, index) => {
-            if (character === element && !charGuessFound) {
-                this.guesses[index] = character
-                lives++
-            }
-        })
-        if (!charWordFound && !guessedAlready) {
-            this.lives--
-            if (!guessedAlready) {
-                failArr.push(character)
-            }
-        }
-        this.renderWord()
-        return true
-    }
-    return false
-}
 
-function resetGame() {
-    if (lives === game.word.length || game.lives === 0) {
-        if (lives === game.word.length) {
-            soundWin.play()
-        } else if (game.lives === 0) {
-            soundFail.play()
-        }
-        displayField.value = game.word.join("").toUpperCase()
-    }
-    setTimeout(() => {
-        guessField.innerHTML = ""
-        game = new Game(words[randomize()], 5)
-        lives = 0
-        game.renderWord()
-    }, 1500)
-}
+
 
 //  === CHARACTER INPUT ===
 document.addEventListener("keyup", e => {
-    e.keyCode >= 65 && e.keyCode <= 90 ? game.checkCharacter(e.key) : null
-    resetGame()
+    e.keyCode >= 65 && e.keyCode <= 90 ? game.checkCharacter(e.key) : console.log('wrong letters')
+    // game.resetGame()
 })
 //  ========== Keyboard/ Old Way Creation ==========
 // var alephArr = [A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z]
