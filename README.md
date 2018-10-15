@@ -10,5 +10,8 @@ https://www.figma.com/file/XBwPmdVSqZhNWEWpBCowNGkS/Project-1-Hangman?node-id=2%
 
 And here, you can find my thought process for the project, start to finish:
 https://trello.com/b/uiSBmv4u
+
+Here, you can find the site on BitBaloon:
+http://cocky-cori-beaa24.netlify.com/
 =======
 
