@@ -30,7 +30,7 @@ const attemptField = document.querySelector("#livesField")
 const soundWin = new Audio("/audio/audioSuccess.mp3")
 const soundFail = new Audio("/audio/audioFail.mp3")
 let lives = 0
-
+const failArr = this.failed
 //  === WORD RANDOMIZER ===
 const randomize = (min = 0, max = words.length - 1) => Math.floor(Math.random() * (max - min + 1)) + min
 
@@ -47,24 +47,42 @@ class Game {
 function renderWord() {
     displayField.value = this.guesses.join("").toUpperCase()
     attemptField.textContent = `Pleas Left: ${this.lives}`
-} 
+}
 
 //  === MISSED GUESS DISPLAY ===
-guessField.innerHTML = ""
-// this.failed.forEach((element, index) => {
-//     const wrongLetter = document.createElement("li");
-//     wrongLetter.textContent = element.toUpperCase();
-//     wrongLetter.setAttribute("id", index);
-//     const lastInsert = document.getElementById(`${index - 1}`);
-//     guessField.insertBefore(wrongLetter, lastInsert);
-// })
-this.failed.forEach((element, index) => {
-    const wrongLetter = document.createElement('li')
-    wrongLetter.textContent = element.toUpperCase()
-    wrongLetter.setAttribute("id", index)
-    const lastInsert = document.getElementById(`${index - 1}`)
-    guessField.insertBefore(wrongLetter, lastInsert)
-});
+guessField.innerHTML = "";
+// failArr.forEach(function (element, index) {
+//     const wrongLetter = document.createElement('li')
+//     wrongLetter.textContent = element.toUpperCase()
+//     wrongLetter.setAttribute("id", index)
+//     const lastInsert = document.getElementById(`${index - 1}`)
+//     guessField.insertBefore(wrongLetter, lastInsert)
+// });
+
+//  === CHARACTER CHECKER ===
+function checkCharacter(character) {
+    if (this.lives && lives !== this.word.length) {
+        const charWordFound = this.word.find(element => element === character)
+        const charGuessFound = this.guesses.find(element => element === character)
+
+        const guessedAlready = this.failed.includes(character)
+        this.word.forEach((element, index) => {
+            if (character === element && !charGuessFound) {
+                this.guesses[index] = character
+                lives++
+            }
+        })
+        if (!charWordFound && !guessedAlready) {
+            this.lives--
+            if (!guessedAlready) {
+                failArr.push(character)
+            }
+        }
+        this.renderWord()
+        return true
+    }
+    return false
+}
 
 
 //  ========== Keyboard/ Old Way Creation ==========
@@ -110,4 +128,4 @@ this.failed.forEach((element, index) => {
 //     wordBoxLength(wordArr)
 //     guessPass =wordArr.length 
 //     var hint1 = document.getElementById('hint1')
-// }
+//
