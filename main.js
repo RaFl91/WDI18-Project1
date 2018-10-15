@@ -1,4 +1,14 @@
 // Globals
+class Game {
+    constructor(word, lives) {
+        console.log(word)
+        this.word = word.word.toLowerCase().split("");
+        this.lives = lives;
+        this.guesses = word.word.replace(/[A-Z]/gi, "-").split("");
+        this.failed = []
+        this.hint = word.hint1
+    }
+}
 
 var wordList = [{
     word: "DIS",
@@ -17,7 +27,7 @@ var wordList = [{
     hint1: "10 circles of eternal suffering"
 }, {
     word: "LUCIFER",
-    hint1: `The fallen one, Son of the morning, The crooked serpent, Ib'lis, Frozen in center`
+    hint1: `The Fallen One, Son of the Morning, The Crooked Serpent, Ib'lis, Frozen in center`
 }, {
     word: "MALEBRANCHE",
     hint1: "Winged demons who torment politicians in the fifth Maleboge of the Eighth circle"
@@ -31,18 +41,17 @@ const attemptField = document.querySelector("#livesField")
 const soundWin = new Audio("/audio/audioSuccess.mp3")
 const soundFail = new Audio("/audio/audioFail.mp3")
 let lives = 0
-const failArr = this.failed
+
 //  === WORD RANDOMIZER ===
 const randomize = (min = 0, max = words.length - 1) => Math.floor(Math.random() * (max - min + 1)) + min
 
-class Game {
-    constructor(word, lives) {
-        this.word = word.toLowerCase().split("");
-        this.lives = lives;
-        this.guesses = word.replace(/[A-Z]/gi, "-").split("");
-        this.failed = []
-    }
-}
+
+//  === GAME START W/ NEW WORD ===
+let game = new Game(words[randomize()], 5)
+Game.renderWord();
+
+const failArr = game.failed
+
 
 //  === DISPLAY WORD ON SCREEN ===
 function renderWord() {
@@ -53,8 +62,12 @@ function renderWord() {
 //  === MISSED GUESS DISPLAY ===
 guessField.innerHTML = " "
 failArr.forEach((element, index) => {
-    
-});
+    const wrongLetter = document.createElement("li")
+    wrongLetter.textContent = element.toUpperCase()
+    wrongLetter.setAttribute("id", index)
+    const lastInsert = document.getElementById(`${index -1}`)
+    guessField.insertBefore(wrongLetter, lastInsert)
+})
 
 //  === CHARACTER CHECKER ===
 function checkCharacter(character) {
@@ -81,7 +94,6 @@ function checkCharacter(character) {
     return false
 }
 
-
 function resetGame() {
     if (lives === game.word.length || game.lives === 0) {
         if (lives === game.word.length) {
@@ -93,15 +105,11 @@ function resetGame() {
     }
     setTimeout(() => {
         guessField.innerHTML = ""
-        game = newGame(words[randomize()], 5)
+        game = new Game(words[randomize()], 5)
         lives = 0
         game.renderWord()
     }, 1500)
 }
-
-//  === GAME START W/ NEW WORD ===
-let game = newGame(words[randomize()], 5)
-game.renderWord()
 
 //  === CHARACTER INPUT ===
 document.addEventListener("keyup", e => {
