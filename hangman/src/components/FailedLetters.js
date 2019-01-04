@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 
 export default class FailedLetters extends Component {
 
-  getWrongLetters() {
+  getWrongLetters = () => {
     const fail = this.props.guessedLetters.filter(letter => {
-     return !this.props.word.split('').includes(letter)
+      return !this.props.word.split('').includes(letter)
     })
     return fail
   }
@@ -12,7 +12,7 @@ export default class FailedLetters extends Component {
   render() {
     return (
       <div>
-      {this.getWrongLetters()}
+        {this.getWrongLetters()}
       </div>
     )
   }

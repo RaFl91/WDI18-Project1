@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import WordList from './WordList'
 
 export default class DisplayField extends Component {
-  state = {
-    WordList: WordList[Math.floor(Math.random() * WordList.length)]
-  }
+  
   render() {
-    const wordLetter = this.props.word.split('')
+    const wordLetters = this.props.word.split('')
 
-    const answer = wordLetter.map(letter => {
+    const answer = wordLetters.map(letter => {
       let letterState = '_'
-      if (this.props.guessedLetters.includes(letter)) {
+      if(this.props.guessedLetters.includes(letter)) {
         letterState = letter
       }
       return letterState + ' '
