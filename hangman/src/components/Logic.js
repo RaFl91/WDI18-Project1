@@ -23,8 +23,8 @@ export default class Logic extends Component {
             <div>
                 <h1>Hangman's Inferno</h1>
                 <DisplayField word={this.state.WordList.word} guessedLetters={this.state.guessedLetters} />
-                <FailedLetters word={this.state.WordList.word} guessedLetters={this.state.guessedLetters} />
                 <Input updateGuessedLetters={this.updateGuessedLetters} />
+                <FailedLetters word={this.state.WordList.word} guessedLetters={this.state.guessedLetters} />
             </div>
         )
     }
